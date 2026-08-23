@@ -2,15 +2,36 @@
 
 **Smart Home Bridge** — Links pet behavior to IoT devices — lights dim when the pet sleeps, a lamp warms on hungry.
 
-Part of the [ComputerPets](https://github.com/RicheyWorks/computerpets) ecosystem. Index: [computerpets-ecosystem](https://github.com/RicheyWorks/computerpets-ecosystem).
+Part of [ComputerPets](https://github.com/RicheyWorks/computerpets). Map: [computerpets-ecosystem](https://github.com/RicheyWorks/computerpets-ecosystem).
 
-> Status: **design scaffold**. This repository ships the contract, README, and layout so implementation can start without renaming the organ later.
+| | |
+| --- | --- |
+| Status | Design scaffold — contract frozen, implementation next |
+| License | MIT |
+| First pet | Still [Rui on the desktop](https://github.com/RicheyWorks/computerpets/blob/main/docs/START-HERE.md). This organ is optional. |
 
-## Why it exists
+## The job
 
 Rui sleeps, the room follows. Nest is opt-in and local-first. No vendor cloud required if you already run MQTT.
 
 The flagship overlay already puts a living sticker on the real desktop (Rui first, 210 kinds). Nest does not replace that. It is one organ.
+
+## Who uses it
+
+Players with MQTT or Home Assistant. Opt-in, local-first.
+
+## What it is not
+
+Not a lock/camera controller. Never drives security hardware.
+
+## Architecture
+
+```mermaid
+flowchart LR
+  overlay -->|state| nest
+  nest --> mqtt
+  mqtt --> ha
+```
 
 ## Stack
 
@@ -18,12 +39,6 @@ TypeScript · MQTT · Home Assistant discovery · optional Hue / Matter bridge
 
 GroupId / namespace: `com.enterprisepet.nest`  
 Default listen: `1883 / 8123`
-
-## Talks to
-
-- computerpets desktop vitals
-- computerpets-wallpaper
-- computerpets-telemetry (anonymous pulses only)
 
 ## Contract
 
@@ -40,6 +55,26 @@ Default listen: `1883 / 8123`
 ### Failure doctrine
 
 Broker down → overlay unaffected. Wrong room scene → one-click disable in tray. Never drive locks or cameras.
+
+## First slice
+
+Build this and stop. Do not boil the ocean.
+
+**Publish `sleep|hungry|play` and HA discovery for `binary_sensor.pet_asleep`.**
+
+You know it works when: Broker down: overlay unaffected. One-click disable in the tray. No camera topics.
+
+## Environment
+
+`MQTT_URL`, `HOME_TOKEN`
+
+Never commit secrets. Never put Steam or chain keys in the overlay.
+
+## Neighbors
+
+- computerpets desktop vitals
+- computerpets-wallpaper
+- computerpets-telemetry (anonymous pulses only)
 
 ## Layout
 
@@ -61,13 +96,12 @@ cd bridge; npm install; npm run start
 
 You do not need this service to meet Rui. The [flagship start-here](https://github.com/RicheyWorks/computerpets/blob/main/docs/START-HERE.md) is still the first pet.
 
-## Ecosystem
+## Links
 
-| Organ | Repo |
-| --- | --- |
-| Flagship desktop + Spring | [RicheyWorks/computerpets](https://github.com/RicheyWorks/computerpets) |
-| This organ | [RicheyWorks/computerpets-nest](https://github.com/RicheyWorks/computerpets-nest) |
-| Full map | [RicheyWorks/computerpets-ecosystem](https://github.com/RicheyWorks/computerpets-ecosystem) |
+- Flagship: [RicheyWorks/computerpets](https://github.com/RicheyWorks/computerpets)
+- This repo: [RicheyWorks/computerpets-nest](https://github.com/RicheyWorks/computerpets-nest)
+- Map: [RicheyWorks/computerpets-ecosystem](https://github.com/RicheyWorks/computerpets-ecosystem)
+- Contract file: [docs/CONTRACT.md](docs/CONTRACT.md)
 
 ## License
 
