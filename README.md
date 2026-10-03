@@ -1,30 +1,38 @@
 # Nest
 
-**Smart Home Bridge** — Links pet behavior to IoT devices — lights dim when the pet sleeps, a lamp warms on hungry.
+**Smart Home Bridge** — A planned home-automation bridge that maps pet state to MQTT and Home Assistant scenes.
 
 Part of [ComputerPets](https://github.com/RicheyWorks/computerpets). Map: [computerpets-ecosystem](https://github.com/RicheyWorks/computerpets-ecosystem).
 
-| | |
-| --- | --- |
-| Status | Design scaffold — contract frozen, implementation next |
-| License | MIT |
-| First pet | Still [Rui on the desktop](https://github.com/RicheyWorks/computerpets/blob/main/docs/START-HERE.md). This organ is optional. |
+[Status](#status) · [Contract](docs/CONTRACT.md) · [Contributor start](#contributor-start) · [Ecosystem](https://github.com/RicheyWorks/computerpets-ecosystem)
 
-## The job
+| Project | At a glance |
+| --- | --- |
+| Status | Design scaffold; not runnable yet |
+| License | MIT |
+| First pet | [Flagship start guide](https://github.com/RicheyWorks/computerpets/blob/main/docs/START-HERE.md) |
+
+## Status
+
+This repository contains a [contract](docs/CONTRACT.md) and a [source placeholder](src/nest/index.ts). It has no runnable application, build manifest, automated tests, or CI workflow.
+
+The experience, interfaces, integrations, and safeguards below are **implementation plans**, not supported features. The first implementation slice defines the initial contribution target.
+
+## Planned role
 
 Rui sleeps, the room follows. Nest is opt-in and local-first. No vendor cloud required if you already run MQTT.
 
-The flagship overlay already puts a living sticker on the real desktop (Rui first, 210 kinds). Nest does not replace that. It is one organ.
+For the desktop pet, start with the [flagship guide](https://github.com/RicheyWorks/computerpets/blob/main/docs/START-HERE.md).
 
-## Who uses it
+## Intended audience
 
 Players with MQTT or Home Assistant. Opt-in, local-first.
 
-## What it is not
+## Out of scope
 
 Not a lock/camera controller. Never drives security hardware.
 
-## Architecture
+## Proposed integration
 
 ```mermaid
 flowchart LR
@@ -33,14 +41,14 @@ flowchart LR
   mqtt --> ha
 ```
 
-## Stack
+## Planned stack
 
 TypeScript · MQTT · Home Assistant discovery · optional Hue / Matter bridge
 
 GroupId / namespace: `com.enterprisepet.nest`  
-Default listen: `1883 / 8123`
+Proposed listen surface: `1883 / 8123`
 
-## Contract
+## Proposed contract
 
 ### Data
 
@@ -52,29 +60,29 @@ Default listen: `1883 / 8123`
 - HA discovery: binary_sensor.pet_asleep, light.pet_den
 - POST /v1/pair — local token for this home
 
-### Failure doctrine
+### Planned safeguards
 
 Broker down → overlay unaffected. Wrong room scene → one-click disable in tray. Never drive locks or cameras.
 
-## First slice
+## First implementation slice
 
-Build this and stop. Do not boil the ocean.
+Initial implementation target:
 
 **Publish `sleep|hungry|play` and HA discovery for `binary_sensor.pet_asleep`.**
 
-You know it works when: Broker down: overlay unaffected. One-click disable in the tray. No camera topics.
+Acceptance targets: Broker down: overlay unaffected. One-click disable in the tray. No camera topics.
 
-## Environment
+## Planned environment
 
 `MQTT_URL`, `HOME_TOKEN`
 
 Never commit secrets. Never put Steam or chain keys in the overlay.
 
-## Neighbors
+## Related projects
 
-- computerpets desktop vitals
-- computerpets-wallpaper
-- computerpets-telemetry (anonymous pulses only)
+- [computerpets](https://github.com/RicheyWorks/computerpets) desktop vitals
+- [computerpets-wallpaper](https://github.com/RicheyWorks/computerpets-wallpaper)
+- [computerpets-telemetry](https://github.com/RicheyWorks/computerpets-telemetry) (anonymous pulses only)
 
 ## Layout
 
@@ -86,15 +94,18 @@ computerpets-nest/
   src/                implementation lands here
 ```
 
-## Run (Windows)
+## Contributor start
 
-PowerShell, from this folder, after the flagship helpers (Git, Node LTS 22+, JDK 21 as needed):
+With Git and PowerShell, clone the scaffold and read its contract and source marker:
 
 ```powershell
-cd bridge; npm install; npm run start
+git clone https://github.com/RicheyWorks/computerpets-nest.git
+Set-Location computerpets-nest
+Get-Content .\docs\CONTRACT.md
+Get-Content .\src\nest\index.ts
 ```
 
-You do not need this service to meet Rui. The [flagship start-here](https://github.com/RicheyWorks/computerpets/blob/main/docs/START-HERE.md) is still the first pet.
+Start with the [first implementation slice](#first-implementation-slice). Add the minimum project setup and tests needed for that slice, then document verified run commands. The proposed stack above is a design choice; there is no install or launch command for this checkout yet.
 
 ## Links
 
